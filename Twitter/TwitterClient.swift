@@ -76,4 +76,63 @@ class TwitterClient: BDBOAuth1SessionManager {
             self.loginFailure?(error)
         }
     }
+    
+    func isFavorited(id: String, success: @escaping (Bool) -> (), failure: @escaping (Error) -> ()){
+        let url = "1.1/statuses/show.json?id=\(id)"
+        var favorited = true
+        get(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            let dictionary = response as! NSDictionary
+            favorited = dictionary["favorited"] as! Bool
+            success(favorited)
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    func isRetweeted(id: String, success: @escaping (Bool) -> (), failure: @escaping (Error) -> ()){
+        let url = "1.1/statuses/show.json?id=\(id)"
+        var retweeted = true
+        get(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            let dictionary = response as! NSDictionary
+            retweeted = dictionary["retweeted"] as! Bool
+            success(retweeted)
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    func favoriteTweet(id: String, success: @escaping () -> (), failure: @escaping (Error) -> ()){
+        let url = "1.1/favorites/create.json?id=\(id)"
+        post(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    func unfavoriteTweet(id: String, success: @escaping () -> (), failure: @escaping (Error) -> ()){
+        let url = "1.1/favorites/destroy.json?id=\(id)"
+        post(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    func retweetTweet(id: String, success: @escaping () -> (), failure: @escaping (Error) -> ()){
+        let url = "1.1/statuses/retweet/\(id).json"
+        post(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    
+    
 }

@@ -22,16 +22,51 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var numFavoritesLabel: UILabel!
     
     @IBAction func favoriteButtonAction(_ sender: UIButton) {
-        
-        favoriteButton.setImage(#imageLiteral(resourceName: "favorited"), for: .normal)
-        tweet.numFavorites = tweet.numFavorites + 1
-        numFavoritesLabel.text = tweet.numFavorites.description
+
+        TwitterClient.sharedInstance?.isFavorited(id: tweet.id!, success: { (favoritedCurrently: Bool) in
+            if(favoritedCurrently){
+                TwitterClient.sharedInstance?.unfavoriteTweet(id: self.tweet.id!, success: { 
+                    self.favoriteButton.setImage(#imageLiteral(resourceName: "unfavorited"), for: .normal)
+                    self.tweet.numFavorites = self.tweet.numFavorites - 1
+                    self.numFavoritesLabel.text = self.tweet.numFavorites.description
+                }, failure: { (error: Error) in
+                    print(error.localizedDescription)
+                })
+
+            } else {
+                TwitterClient.sharedInstance?.favoriteTweet(id: self.tweet.id!, success: {
+                    self.favoriteButton.setImage(#imageLiteral(resourceName: "favorited"), for: .normal)
+                    self.tweet.numFavorites = self.tweet.numFavorites + 1
+                    self.numFavoritesLabel.text = self.tweet.numFavorites.description
+                }, failure: { (error: Error) in
+                    print(error.localizedDescription)
+                })
+            }
+        }, failure: { (error: Error) in
+            print(error.localizedDescription)
+        })
     }
     
     @IBAction func retweetButtonAction(_ sender: UIButton) {
-        retweetButton.setImage(#imageLiteral(resourceName: "retweeted"), for: .normal)
-        tweet.numRetweets = tweet.numRetweets + 1
-        numRetweetsLabel.text = tweet.numRetweets.description
+        TwitterClient.sharedInstance?.isRetweeted(id: tweet.id!, success: { (retweetedCurrently: Bool) in
+            if(retweetedCurrently){
+                self.retweetButton.setImage(#imageLiteral(resourceName: "unretweeted"), for: .normal)
+                self.tweet.numRetweets = self.tweet.numRetweets - 1
+                self.numRetweetsLabel.text = self.tweet.numRetweets.description
+                
+            } else {
+                TwitterClient.sharedInstance?.retweetTweet(id: self.tweet.id!, success: {
+                    self.retweetButton.setImage(#imageLiteral(resourceName: "retweeted"), for: .normal)
+                    self.tweet.numRetweets = self.tweet.numRetweets + 1
+                    self.numRetweetsLabel.text = self.tweet.numRetweets.description
+                }, failure: { (error: Error) in
+                    print(error.localizedDescription)
+                })
+                
+            }
+        }, failure: { (error: Error) in
+            print(error.localizedDescription)
+        })
     }
 
     
