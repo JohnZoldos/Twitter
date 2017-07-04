@@ -7,23 +7,28 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class User: NSObject {
     static let userDidLogoutNotification = "UserDidLogout"
     
-    var name: NSString?
-    var screenName: NSString?
+    var name: String?
+    var screenName: String?
     var profileUrl: NSURL?
     var tagline: NSString?
+    var profileImage: UIImageView?
     
     var dictionary: NSDictionary?
     
     init(dictionary: NSDictionary){
-        name = dictionary["name"] as? NSString
-        screenName = dictionary["screen_name"] as? NSString
+        name = dictionary["name"] as? String
+        screenName = dictionary["screen_name"] as? String
         let profileUrlString = dictionary["profile_image_url_https"] as? NSString
         if let profileUrlString = profileUrlString {
+            
             profileUrl = NSURL(string: profileUrlString as String)
+            profileImage?.af_setImage(withURL: profileUrl! as URL)
+
         }
         tagline = dictionary["description"] as? NSString
         self.dictionary = dictionary

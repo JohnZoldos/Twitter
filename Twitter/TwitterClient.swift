@@ -133,6 +133,17 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
+    func replyToTweet(id: String, text: String, success: @escaping () -> (), failure: @escaping (Error) -> ()){
+        let stringUrl = text.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+        let url = "1.1/statuses/update.json?status=\(String(describing: stringUrl))&in_reply_to_status_id=\(id)"
+        post(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
     
     
 }
