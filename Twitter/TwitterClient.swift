@@ -144,6 +144,18 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
+    func getUserInfo(screenName: String, success: @escaping (NSDictionary) -> (), failure: @escaping (Error) -> ()){
+        let url = "1.1/users/show.json?screen_name=\(screenName)"
+        post(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            let dictionary = response as! NSDictionary
+            success(dictionary)
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
+    
     
     
 }
