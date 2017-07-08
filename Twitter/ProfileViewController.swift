@@ -7,16 +7,23 @@
 //
 
 import UIKit
+import Alamofire
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
+    var screenname: String?
+    var tweets: [Tweet]!
+    
+    
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var profilePictureView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var handleLabel: UILabel!
     @IBOutlet weak var numTweetsLabel: UILabel!
     @IBOutlet weak var numFollowersLabel: UILabel!
     @IBOutlet weak var numFollowingLabel: UILabel!
+    @IBOutlet weak var bannerView: UIImageView!
     /*@IBOutlet weak var tweetCellProfilePictureView: UIButton!
     @IBOutlet weak var tweetCellUsernameLabel: UILabel!
     @IBOutlet weak var tweetCellHandleLabel: UILabel!
@@ -36,7 +43,72 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 120
+    
+        
+        
+        usernameLabel.layer.shadowRadius = 10
+        profilePictureView.layer.cornerRadius = 5
+        profilePictureView.clipsToBounds = true
+        var user: OtherUser?
+        TwitterClient.sharedInstance?.getUserInfo(screenName: (screenname?.replacingOccurrences(of: "@", with: ""))!, success: { (dict: NSDictionary) in
+            user = OtherUser(dictionary: dict)
+            self.usernameLabel.text = user?.name!
+            self.profilePictureView?.af_setImage(withURL: user?.profileUrlBigger as! URL)
+            let handle = "@" + (user?.screenName)!
+            self.handleLabel.text = handle
+            self.bannerView?.af_setImage(withURL: user?.bannerUrl as! URL)
+            self.usernameLabel.layer.shadowRadius = 10
+            self.addBlurEffect(view: (self.bannerView)!)
+            self.numTweetsLabel.text = user?.numTweets?.description
+            self.numFollowersLabel.text = user?.numFollowers?.description
+            self.numFollowingLabel.text = user?.numFollowing?.description
+        }, failure: { (error: Error) in
+            print(error.localizedDescription)
+        })
+        
+        TwitterClient.sharedInstance?.userTimeline(screenName: self.screenname!, count: 20, success: { (tweets: [Tweet]) in
+            self.tweets = tweets
+            self.tableView.reloadData()
+        }, failure: { (error: Error) in
+            print(error.localizedDescription)
+        })
+        
+        
+        
+        
+        
         // Do any additional setup after loading the view.
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let tweets = tweets {
+            return tweets.count
+        } else{
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
+        cell.tweet = tweets![indexPath.row]
+        //cell.profileButton.tag = indexPath.row
+        return cell
+        
+    }
+    
+    func addBlurEffect(view: UIImageView)
+    {
+        
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight] // for supporting device rotation
+        blurEffectView.alpha = 0.7
+        view.addSubview(blurEffectView)
     }
 
     override func didReceiveMemoryWarning() {

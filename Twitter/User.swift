@@ -17,8 +17,6 @@ class User: NSObject {
     var profileUrl: NSURL?
     var tagline: NSString?
     var profileImage: UIImageView?
-    var bannerImage: UIImageView?
-    var profileImageBigger: UIImageView?
     
     var dictionary: NSDictionary?
     
@@ -27,25 +25,11 @@ class User: NSObject {
         screenName = dictionary["screen_name"] as? String
         let profileUrlString = dictionary["profile_image_url_https"] as? NSString
         if let profileUrlString = profileUrlString {
-            
             profileUrl = NSURL(string: profileUrlString as String)
             profileImage?.af_setImage(withURL: profileUrl! as URL)
-            let profileImageBiggerURLString = profileUrlString.replacingOccurrences(of: "normal", with: "bigger")
-            if let profileImageBiggerURL = NSURL(string: profileImageBiggerURLString as String){
-                profileImageBigger?.af_setImage(withURL: profileImageBiggerURL as URL)
-            }
-
         }
         tagline = dictionary["description"] as? NSString
         self.dictionary = dictionary
-        var bannerImageURL: NSURL?
-        TwitterClient.sharedInstance?.getUserInfo(screenName: screenName!, success: { (info: NSDictionary) in
-            let bannerImageURLString = info["profile_banner_url"]
-            bannerImageURL = NSURL(string: bannerImageURLString as! String)
-        }, failure: { (error: Error) in
-            print(error.localizedDescription)
-        })
-        bannerImage?.af_setImage(withURL: bannerImageURL! as URL)
     }
     
     static var _currentUser: User?

@@ -20,6 +20,7 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var numRetweetsLabel: UILabel!
     @IBOutlet weak var numFavoritesLabel: UILabel!
+    @IBOutlet weak var profileButton: UIButton!
     
     @IBAction func favoriteButtonAction(_ sender: UIButton) {
 

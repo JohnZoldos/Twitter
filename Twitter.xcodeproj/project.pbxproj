@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4951F66D1F113B2F00EE9AED /* OtherUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4951F66C1F113B2F00EE9AED /* OtherUser.swift */; };
 		499587361F0C3BD9002033C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499587351F0C3BD9002033C8 /* Assets.xcassets */; };
 		499587381F0DDAD3002033C8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499587371F0DDAD3002033C8 /* ProfileViewController.swift */; };
 		49AF089A1EEA0A1D00FFA983 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AF08991EEA0A1D00FFA983 /* AppDelegate.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4951F66C1F113B2F00EE9AED /* OtherUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUser.swift; sourceTree = "<group>"; };
 		499587351F0C3BD9002033C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		499587371F0DDAD3002033C8 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		49AF08961EEA0A1D00FFA983 /* Twitter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twitter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +117,7 @@
 			children = (
 				49AF08B01EEB1A5100FFA983 /* User.swift */,
 				49AF08B21EEB1A5B00FFA983 /* Tweet.swift */,
+				4951F66C1F113B2F00EE9AED /* OtherUser.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 			files = (
 				49B3EC4D1F0AAFC300AAD9BC /* ComposeTweetViewController.swift in Sources */,
 				49AF08B11EEB1A5100FFA983 /* User.swift in Sources */,
+				4951F66D1F113B2F00EE9AED /* OtherUser.swift in Sources */,
 				499587381F0DDAD3002033C8 /* ProfileViewController.swift in Sources */,
 				49AF08B91EF58E4900FFA983 /* TweetCell.swift in Sources */,
 				49AF08B31EEB1A5B00FFA983 /* Tweet.swift in Sources */,

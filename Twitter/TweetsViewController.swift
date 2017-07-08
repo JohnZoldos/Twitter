@@ -23,7 +23,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             self.tweets = tweets
             self.tableView.reloadData()
         }, failure: { (error: Error) in
-            
+            print(error.localizedDescription)
         })
         // Do any additional setup after loading the view.
         
@@ -46,6 +46,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         cell.tweet = tweets![indexPath.row]
+        cell.profileButton.tag = indexPath.row
         
         return cell
 
@@ -71,6 +72,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
             let detailsViewController = segue.destination as! DetailsViewController
             detailsViewController.tweet = tweet
+        } else if let button = sender as? UIButton{
+            let indexPath = IndexPath(row: button.tag, section: 0)
+            let cell = tableView.cellForRow(at: indexPath) as! TweetCell
+            let profileViewController = segue.destination as! ProfileViewController
+            profileViewController.screenname = cell.tweet.twitterHandle!
         }
 
     }
