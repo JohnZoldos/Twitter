@@ -25,13 +25,26 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate{
     
     
     @IBAction func tweetButtonAction(_ sender: UIButton) {
-        let text = twitterHandleReplyingTo! + " " + textView.text
-        TwitterClient.sharedInstance?.replyToTweet(id: tweetID!, text: text, success: {
-            self.view.endEditing(true)
-            self.dismiss(animated: true)
-        }, failure: { (error: Error) in
-            print(error.localizedDescription)
-        })
+        var text: String?
+        if(twitterHandleReplyingTo != nil){
+            text = twitterHandleReplyingTo! + " " + textView.text
+            TwitterClient.sharedInstance?.replyToTweet(id: tweetID!, text: text!, success: {
+                self.view.endEditing(true)
+                self.dismiss(animated: true)
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+
+        } else {
+            text = textView.text
+            TwitterClient.sharedInstance?.composeTweet(text: text!, success: {
+                self.view.endEditing(true)
+                self.dismiss(animated: true)
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+        }
+        
     }
     
     @IBAction func cancelButtonAction(_ sender: UIButton) {

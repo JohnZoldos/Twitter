@@ -156,6 +156,17 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
+    func composeTweet(text: String, success: @escaping () -> (), failure: @escaping (Error) -> ()){
+        let stringUrl = text.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+        let url = "1.1/statuses/update.json?status=\(String(describing: stringUrl))"
+        post(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print(error.localizedDescription)
+            failure(error)
+        }
+    }
+    
     func getUserInfo(screenName: String, success: @escaping (NSDictionary) -> (), failure: @escaping (Error) -> ()){
         let url = "1.1/users/show.json?screen_name=\(screenName)"
         get(url, parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in

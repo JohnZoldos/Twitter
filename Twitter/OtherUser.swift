@@ -28,7 +28,12 @@ class OtherUser: NSObject {
         name = dictionary["name"] as? String
         screenName = dictionary["screen_name"] as? String
         let bannerUrlString = dictionary["profile_banner_url"] as? String
-        bannerUrl = NSURL(string: bannerUrlString!)
+        if let bannerUrlString = bannerUrlString {
+            bannerUrl = NSURL(string: bannerUrlString)
+        } else {
+            let bannerUrlString = dictionary["profile_background_image_url_https"] as? String
+            bannerUrl = NSURL(string: bannerUrlString!)
+        }
         let profileUrlString = dictionary["profile_image_url_https"] as? NSString
         if let profileUrlString = profileUrlString {
             profileUrl = NSURL(string: profileUrlString as String)
